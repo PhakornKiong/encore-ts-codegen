@@ -2,7 +2,13 @@ package hello
 
 import (
 	"context"
+
+	"encore.dev/rlog"
 )
+
+type queryParameters struct {
+	Name []string `query:"id" encore:"optional"`
+}
 
 // Welcome to Encore!
 // This is a simple "Hello World" project to get you started.
@@ -16,9 +22,10 @@ import (
 //
 //	curl http://localhost:4000/hello/World
 //
-//encore:api public path=/hello/:name
-func World(ctx context.Context, name string) (*Response, error) {
-	msg := "Hello, " + name + "!"
+//encore:api public path=/hello
+func World(ctx context.Context, query queryParameters) (*Response, error) {
+	rlog.Debug("hello world", "query", query)
+	msg := "Hello, " + query.Name[0] + "!"
 	return &Response{Message: msg}, nil
 }
 
